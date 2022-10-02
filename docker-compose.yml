@@ -11,6 +11,9 @@ services:
     depends_on: 
       - node_exporter
     container_name: prometheus
+    volumes: 
+      - ./prometheus/:/etc/prometheus
+      - prometheus_data:/prometheus
   grafana:
     build: ./grafana
     ports: 
@@ -28,7 +31,13 @@ services:
     networks:
         - backend
     container_name: node_exporter
-
+  speedtest:
+    ports:
+      - "9500:9500"
+    image: miguelndecarvalho/speedtest-exporter
+    networks:
+      - backend
+    container_name: speedtest
 networks:
     frontend:
     backend:
@@ -37,3 +46,4 @@ volumes:
     grafana_etc:
     grafana_usr:
     grafana_var:
+    prometheus_data:
